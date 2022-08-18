@@ -1,5 +1,6 @@
 # Tkinter for 2.7; tkinter for 3.3/3.4 (and above I assume)
 # TODO: replace import with a more precise one
+import tkinter.simpledialog
 from tkinter import *
 import tkinter.filedialog as file_dialog
 from tkinter import messagebox
@@ -41,6 +42,19 @@ def font_courier():
     global text
     text.config(font="Courier")
 
+# TODO: Rework font settings
+def set_font_size():
+    global text
+    messagebox.showwarning(title="Font size effect", message="Current version doesn't handle "
+                                                             "font and size interactions well")
+    size = tkinter.simpledialog.askinteger(title="Set font size",
+                                           prompt="Enter desired font size")
+    if (8 <= size <= 72):
+        text.config(font=str(size))
+    else:
+        messagebox.showerror("Font size error", "Font size not"
+                                                "supported")
+
 
 font = Menubutton(root, text="Font")
 font.grid()
@@ -53,8 +67,12 @@ font.menu.add_checkbutton(label="Courier", variable=courier,
 font.menu.add_checkbutton(label="Helvetica", variable=helvetica,
                           command=font_helvetica)
 
+
 save_button = Button(root, text="Save", command=save_as)
 save_button.grid()
 open_button = Button(root, text="Open", command=open_file)
 open_button.grid()
+font_size_button = Button(root, text="Set font size", command=
+                          set_font_size)
+font_size_button.grid()
 root.mainloop()
