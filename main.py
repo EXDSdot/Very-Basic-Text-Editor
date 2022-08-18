@@ -2,6 +2,8 @@
 # TODO: replace import with a more precise one
 from tkinter import *
 import tkinter.filedialog as file_dialog
+from tkinter import messagebox
+
 
 root = Tk(baseName="Text editor")
 text = Text(root)
@@ -11,18 +13,23 @@ text.grid()
 def save_as():
     global text
     t = text.get("1.0", "end-1c")
-    save_location = file_dialog.asksaveasfilename()
+    save_location = file_dialog.asksaveasfilename(title="Save file",
+                                                  defaultextension=".txt")
     with open(save_location, "w+") as file:
         file.write(t)
 
-# TODO: Handle exceptions
+
+# TODO: Make error appear on top of the file_dialog window
 def open_file():
     global text
-    file_location = file_dialog.askopenfilename()
-    with open(file_location, "r") as file:
-        file_content = file.read()
-    text.delete("1.0", "end-1c")
-    text.insert("1.0", file_content)
+    file_location = file_dialog.askopenfilename(title="Open file")
+    try:
+        with open(file_location, "r") as file:
+            file_content = file.read()
+        text.delete("1.0", "end-1c")
+        text.insert("1.0", file_content)
+    except (OSError, TypeError):
+        messagebox.showerror("File error", "Couldn't read/open file")
 
 
 def font_helvetica():
