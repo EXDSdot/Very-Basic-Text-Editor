@@ -33,24 +33,36 @@ def open_file():
         messagebox.showerror("File error", "Couldn't read/open file")
 
 
-def font_helvetica():
+def set_font(f=None, sz=None):
     global text
-    text.config(font="Helvetica")
+    if isinstance(f, str):
+        fnt = f
+    if isinstance(sz, int):
+        s = sz
+    try:
+        f
+    except NameError:
+        f = "Arial"
+    try:
+        s
+    except NameError:
+        s = 12
+    text.config(font=fnt + " " + str(s))
+
+
+def font_helvetica():
+    set_font("Helvetica")
 
 
 def font_courier():
-    global text
-    text.config(font="Courier")
+    set_font("Courier")
 
-# TODO: Rework font settings
+
 def set_font_size():
-    global text
-    messagebox.showwarning(title="Font size effect", message="Current version doesn't handle "
-                                                             "font and size interactions well")
     size = tkinter.simpledialog.askinteger(title="Set font size",
                                            prompt="Enter desired font size")
-    if (8 <= size <= 72):
-        text.config(font=str(size))
+    if 8 <= size <= 72:
+        set_font(None, size)
     else:
         messagebox.showerror("Font size error", "Font size not"
                                                 "supported")
@@ -72,7 +84,6 @@ save_button = Button(root, text="Save", command=save_as)
 save_button.grid()
 open_button = Button(root, text="Open", command=open_file)
 open_button.grid()
-font_size_button = Button(root, text="Set font size", command=
-                          set_font_size)
+font_size_button = Button(root, text="Set font size", command=set_font_size)
 font_size_button.grid()
 root.mainloop()
